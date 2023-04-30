@@ -1,2 +1,1 @@
-streamlit
-streamlit-webrtc
+streamlit-webrtc>=0.40.0
