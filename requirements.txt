@@ -1,1 +1,4 @@
-streamlit-webrtc=0.45.0
+streamlit
+numpy
+sounddevice
+soundfile
