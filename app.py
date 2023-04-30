@@ -1,29 +1,28 @@
 import streamlit as st
-import cv2
+import streamlit_webrtc as webrtc
 
 def main():
-    st.title("Webカメラを使用したストリームリットアプリ")
+    st.title("WebRTCを使用したストリームリットアプリ")
 
-    cap = cv2.VideoCapture(0)
+    # カメラを起動する
+    video_stream = webrtc.VideoTransformer(
+        input_video=True,
+        preferred_output_format=webrtc.OutputFormat.MJPEG,
+        on_error=st.error,
+    )
 
-    if not cap.isOpened():
-        st.error("カメラを開けませんでした")
-        return
+    # マイクを起動する
+    audio_stream = webrtc.AudioTransformer(
+        input_audio=True,
+        on_error=st.error,
+    )
 
-    while True:
-        ret, frame = cap.read()
-
-        if not ret:
-            st.warning("フレームを取得できませんでした")
-            break
-
-        # OpenCVでフレームを処理する
-        # ...
-
-        # ストリームリットアプリでフレームを表示する
-        st.image(frame, channels="BGR")
-
-    cap.release()
+    # WebRTCのメディアストリームを表示する
+    webrtc_streamer(
+        key="example",
+        video_transformer_factory=video_stream,
+        audio_transformer_factory=audio_stream,
+    )
 
 if __name__ == "__main__":
     main()
